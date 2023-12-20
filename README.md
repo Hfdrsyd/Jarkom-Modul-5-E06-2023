@@ -34,7 +34,7 @@ Menghitung pembagian IP berdasarkan NID dan Netmask yang didapatkan.
 ![image](Image/tree.jpg)
 
 Dari Tree di atas akan mendapat pembagian IP sebagai berikut.
-![image](Image/assignIP.jpg)
+![image](Image/assignIP.png)
 
 ## Configuration
 Mengatur Network Configuration masing-masing interface pada setiap node.
@@ -248,3 +248,5 @@ route add -net 192.209.1.128 netmask 255.255.255.128 gw 192.209.1.114	#A4
 route add -net 192.209.1.124 netmask 255.255.255.252 gw 192.209.1.114	#A10
 route add -net 192.209.1.104 netmask 255.255.255.252 gw 192.209.1.114	#A5
 ```
+
+
