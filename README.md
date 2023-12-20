@@ -249,4 +249,93 @@ route add -net 192.209.1.124 netmask 255.255.255.252 gw 192.209.1.114	#A10
 route add -net 192.209.1.104 netmask 255.255.255.252 gw 192.209.1.114	#A5
 ```
 
+## DHCP
+### Revolte (DHCP Server)
+
+```
+apt-get update -y
+apt-get install isc-dhcp-server -y
+apt-get install netcat -y
+
+echo '
+INTERFACESv4="eth0"
+INTERFACESv6=' > /etc/default/isc-dhcp-server
+
+echo '
+# A1
+subnet 192.209.4.0 netmask 255.255.252.0 {
+    range 192.209.4.3 192.209.7.254;
+    option routers 192.209.4.1;
+    option broadcast-address 192.209.7.255;
+    option domain-name-servers 192.209.1.126;
+}
+
+# A2
+subnet 192.209.8.0 netmask 255.255.248.0 {
+    range 192.209.8.2 192.209.15.254;
+    option routers 192.209.8.1;
+    option broadcast-address 192.209.15.255;
+    option domain-name-servers 192.209.1.126;
+}
+
+# A3
+subnet 192.209.2.0 netmask 255.255.254.0 {
+    range 192.209.2.2 192.209.3.254;
+    option routers 192.209.2.1;
+    option broadcast-address 192.209.3.255;
+    option domain-name-servers 192.209.1.126;
+}
+
+# A4
+subnet 192.209.1.128 netmask 255.255.255.128 {
+    range 192.209.1.131 192.209.1.254;
+    option routers 192.209.1.129;
+    option broadcast-address 192.209.1.255;
+    option domain-name-servers 192.209.1.126;
+}
+
+# A5
+subnet 192.209.1.104 netmask 255.255.255.252 {
+}
+
+# A6
+subnet 192.209.1.108 netmask 255.255.255.252 {
+}
+
+# A7
+subnet 192.209.1.112 netmask 255.255.255.252 {
+}
+
+# A8
+subnet 192.209.1.116 netmask 255.255.255.252 {
+}
+
+# A9
+subnet 192.209.1.120 netmask 255.255.255.252 {
+}
+
+# A10
+subnet 192.209.1.124 netmask 255.255.255.252 {
+}
+
+' > /etc/dhcp/dhcpd.conf
+
+service isc-dhcp-server restart
+```
+
+### Heiter dan Himmel (DHCP Relay)
+
+```
+apt-get update -y
+apt-get install isc-dhcp-relay -y
+
+echo '
+SERVERS="192.209.1.106"
+INTERFACES="eth0 eth1 eth2"
+OPTIONS=' > /etc/default/isc-dhcp-relay
+
+echo 'net.ipv4.ip_forward=1' > /etc/sysctl.conf
+
+service isc-dhcp-relay start
+```
 
